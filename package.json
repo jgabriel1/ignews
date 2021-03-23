@@ -1,5 +1,5 @@
 {
-  "name": "03-ignews",
+  "name": "ignews",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -11,5 +11,8 @@
     "next": "10.0.9",
     "react": "17.0.2",
     "react-dom": "17.0.2"
+  },
+  "devDependencies": {
+    "prettier": "^2.2.1"
   }
 }
