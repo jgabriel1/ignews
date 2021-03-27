@@ -1,4 +1,5 @@
 import { GetServerSideProps } from 'next';
+import { Session } from 'next-auth';
 import { getSession } from 'next-auth/client';
 import Head from 'next/head';
 import { RichText } from 'prismic-dom';
@@ -12,6 +13,10 @@ type PostProps = {
     content: string;
     updatedAt: string;
   };
+};
+
+type SessionWithActiveSubscription = Session & {
+  activeSubscription: object | null;
 };
 
 export default function Post({ post }: PostProps) {
@@ -41,11 +46,18 @@ export const getServerSideProps: GetServerSideProps = async ({
   req,
   params,
 }) => {
-  const session = await getSession({ req });
   const { slug } = params;
 
-  // if (!session) {
-  // }
+  const session = (await getSession({ req })) as SessionWithActiveSubscription;
+
+  if (!session.activeSubscription) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
 
   const prismic = getPrismicClient(req);
 
